@@ -1,0 +1,20 @@
+<div class="jumbotron">
+  <h1>My Places!</h1>
+  <p class="lead">
+    <img src="images/camera.png" alt="selfie">
+</div>
+<div class="row marketing">
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>Place</th>
+        <th>Type</th>
+      </tr>
+      <tr ng-repeat="item in $storage track by $index">
+        <td>{{item.rating}} </td>   
+        <td> <img src="{{item.image}}"> </td>   
+        <td>{{item.types}} <span class="glyphicon glyphicon-remove" ng-click="deletePlaces()"></span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
