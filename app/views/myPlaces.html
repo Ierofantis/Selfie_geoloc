@@ -8,12 +8,22 @@
     <tbody>
       <tr>
         <th>Place</th>
+        <th>Photo</th>
         <th>Type</th>
+        <th></th>
       </tr>
       <tr ng-repeat="item in $storage track by $index">
         <td>{{item.rating}} </td>   
-        <td> <img src="{{item.image}}"> </td>   
+        <td>       
+        <img src="{{item.image}}" height="100" width="100">         
+       </td> 
         <td>{{item.types}} <span class="glyphicon glyphicon-remove" ng-click="deletePlaces()"></span></td>
+        <td>
+         <button type="button" class="btn btn-default btn-sm" ng-click="downloads(item.image)">
+          <span class="glyphicon glyphicon-download"></span>
+        </button>
+        </td>
+       
       </tr>
     </tbody>
   </table>

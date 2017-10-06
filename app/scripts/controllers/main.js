@@ -16,36 +16,34 @@ angular.module('qcApp')
     var place_id = '';
     var latitude = '';
     var longitude = '';
+
     var mapProp = {
       center: new google.maps.LatLng(51.508742, -0.120850),
       zoom: 15,
     };
+
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
     // Elements for taking the snapshot
+
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
-    var video = document.getElementById('video');
-      
+    var video = document.getElementById('video');      
 
-    // // reload from localStorage
-
-    // var img = new Image();
-    // img.onload = function() {
-    //   context.drawImage(img, 0, 0);
-    // }
-    // img.src = localStorage.getItem("canvas");
 
     // Get access to the camera!
+
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       // Not adding `{ audio: true }` since we only want video now
+
       navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
         video.src = window.URL.createObjectURL(stream);
         video.play();
       });
     }
 
-    $scope.rating = 'Sometimes there are no ratings for the area!';
-    $scope.types = 'What type of place is this ? ';
+    $scope.rating = '';
+    $scope.types = ' ';
 
 
     //html5 geolocation window when at home
@@ -63,10 +61,10 @@ angular.module('qcApp')
 
     //The function for finding place details
 
-    $scope.qualityFunc = function() {
-      //We are calling coordinates in order to use them on the 
-      //second service.      
-      context.drawImage(video, 0, 0, 200, 200);
+    $scope.qualityFunc = function() {          
+
+      context.drawImage(video, 0, 0, 600, 600);
+
       mainServiceObj.getCoordinates(latitude, longitude)
         .then(function(success) {
           place_id = success.data.results[0].place_id;
@@ -77,19 +75,12 @@ angular.module('qcApp')
             center: new google.maps.LatLng(latitude, longitude),
             zoom: 15,
           };
-          var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-
-          //Now we are calling the second service for having the data that we need
+          var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);          
 
           mainServiceObj.getQuality(place_id)
             .then(function(success) {
-              $scope.types = success.data.result.types[0];
-              if (success.data.result.rating) {
-                $scope.rating = success.data.result.rating;
-
-              } else {
-                $scope.rating = '' + success.data.result.name;
-              }
+              $scope.types = success.data.result.types[0];              
+              $scope.rating = '' + success.data.result.name;            
             });
         });
     }
@@ -104,10 +95,15 @@ angular.module('qcApp')
       $scope.list = $localStorage.list;
     }
 
+     $scope.downloads = function(x) {
+     download(x, "dlDataUrlBin.png", "image/png")     
+    }
+
     $scope.savePlaces = function(x) {
 
       localStorage.setItem("canvas", canvas.toDataURL());
       $scope.image = localStorage.getItem("canvas"); 
+      console.log($scope.image)
       $scope.x.types = $scope.types;
       $scope.x.rating = $scope.rating;
       $scope.x.image = $scope.image;
@@ -115,9 +111,7 @@ angular.module('qcApp')
 
       $scope.list.push(x);
       $localStorage.list = $scope.list;
-      $scope.$storage = $localStorage.list;
-
-     
+      $scope.$storage = $localStorage.list;     
     }
 
     $scope.deletePlaces = function(x) {
