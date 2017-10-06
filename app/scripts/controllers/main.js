@@ -15,12 +15,13 @@ angular.module('qcApp')
 
     var place_id = '';
     var latitude = '';
-    var longitude = '';
-
+    var longitude = '';    
     var mapProp = {
       center: new google.maps.LatLng(51.508742, -0.120850),
       zoom: 15,
     };
+     $scope.dataLoading = false;
+     $scope.showVideo = true;
 
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
@@ -28,8 +29,7 @@ angular.module('qcApp')
 
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
-    var video = document.getElementById('video');      
-
+    var video = document.getElementById('video');         
 
     // Get access to the camera!
 
@@ -64,9 +64,12 @@ angular.module('qcApp')
     $scope.qualityFunc = function() {          
 
       context.drawImage(video, 0, 0, 600, 600);
+      $scope.dataLoading = true;
+      $scope.showVideo = false;
 
       mainServiceObj.getCoordinates(latitude, longitude)
         .then(function(success) {
+          wait(2000)
           place_id = success.data.results[0].place_id;
 
           //Configuring the map and refreshing with latitude and longitude  
@@ -80,7 +83,9 @@ angular.module('qcApp')
           mainServiceObj.getQuality(place_id)
             .then(function(success) {
               $scope.types = success.data.result.types[0];              
-              $scope.rating = '' + success.data.result.name;            
+              $scope.rating = '' + success.data.result.name;   
+              $scope.dataLoading = false; 
+              $scope.showVideo = true;        
             });
         });
     }
@@ -96,14 +101,13 @@ angular.module('qcApp')
     }
 
      $scope.downloads = function(x) {
-     download(x, "dlDataUrlBin.png", "image/png")     
+     download(x, "selfie.png", "image/png")     
     }
 
-    $scope.savePlaces = function(x) {
+    $scope.savePlaces = function(x) {     
 
       localStorage.setItem("canvas", canvas.toDataURL());
-      $scope.image = localStorage.getItem("canvas"); 
-      console.log($scope.image)
+      $scope.image = localStorage.getItem("canvas");       
       $scope.x.types = $scope.types;
       $scope.x.rating = $scope.rating;
       $scope.x.image = $scope.image;
@@ -111,7 +115,8 @@ angular.module('qcApp')
 
       $scope.list.push(x);
       $localStorage.list = $scope.list;
-      $scope.$storage = $localStorage.list;     
+      $scope.$storage = $localStorage.list;  
+       
     }
 
     $scope.deletePlaces = function(x) {
