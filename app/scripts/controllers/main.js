@@ -11,7 +11,7 @@
 //bower ngstorage and not ngStorage!
 
 angular.module('qcApp')
-  .controller('MainCtrl', function($scope, $localStorage, $sessionStorage, mainServiceObj) {
+  .controller('MainCtrl', function($scope, $localStorage,$location, $sessionStorage, mainServiceObj) {
 
     var place_id = '';
     var latitude = '';
@@ -83,7 +83,7 @@ angular.module('qcApp')
           mainServiceObj.getQuality(place_id)
             .then(function(success) {
               $scope.types = success.data.result.types[0];              
-              $scope.rating = '' + success.data.result.name;   
+              $scope.rating = '' + success.data.result.name;               
               $scope.dataLoading = false; 
               $scope.showVideo = true;        
             });
@@ -112,14 +112,13 @@ angular.module('qcApp')
       $scope.x.rating = $scope.rating;
       $scope.x.image = $scope.image;
 
-
       $scope.list.push(x);
       $localStorage.list = $scope.list;
       $scope.$storage = $localStorage.list;  
-       
+        $location.url('/MyPlaces');       
     }
 
     $scope.deletePlaces = function(x) {
-      $localStorage.list.splice($localStorage.list.indexOf(x), 1);
+      $localStorage.list.splice(x, 1);
     }
   });
