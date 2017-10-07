@@ -63,7 +63,7 @@ angular.module('qcApp')
 
     $scope.qualityFunc = function() {          
 
-      context.drawImage(video, 0, 0, 900, 768);
+      context.drawImage(video, 0, 0, 900, 800);
       $scope.dataLoading = true;
       $scope.showVideo = false;
 
