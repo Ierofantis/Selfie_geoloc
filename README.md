@@ -1,4 +1,3 @@
-# sg
+# Selfie Geolocator
 
 In progress
-Silence
