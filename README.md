@@ -1,8 +1,8 @@
 # Selfie Geolocator App
 
-I tried to create an app that allows the user to take a selfie and store It to his local storage with the information on where he took the photo.
+I have created an app that allows the user to take a selfie and store it to the local storage with address information.
 
-Also the user is able to download the photo to his device(pc or mobile).
+Also the user is able to download the photo to his device (pc or mobile).
 
 Feel free to check the source code of this app here: https://github.com/Ierofantis/Selfie_geoloc
 
